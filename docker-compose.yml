@@ -1,0 +1,11 @@
+version: "3"
+services:
+  blogger:
+    container_name: blog-web
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./:/src/app
+    ports:
+      - 3000:3000
