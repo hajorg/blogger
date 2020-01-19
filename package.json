@@ -1,0 +1,27 @@
+{
+  "name": "blogger",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hajorg/blogger.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hajorg/blogger/issues"
+  },
+  "homepage": "https://github.com/hajorg/blogger#readme",
+  "dependencies": {
+    "@hapi/hapi": "^19.0.5"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
