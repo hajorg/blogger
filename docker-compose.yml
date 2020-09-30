@@ -5,7 +5,30 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
+    env_file:
+      - ./.env
     volumes:
-      - ./:/src/app
+      - ./migrations:/src/app/migrations
+      - ./src:/src/app/src
+      - ./knexfile.js:/src/app/knexfile.js
+      - ./package.json:/src/app/package.json
+      - ./server.js:/src/app/server.js
     ports:
       - 3000:3000
+    entrypoint: ./node_modules/.bin/nodemon server.js
+    # entrypoint: sleep 9999999
+    # depends_on:
+    #   - pg_service
+  # pg_service:
+  #   image: postgres
+  #   ports:
+  #     - 5443:5432
+  #   environment:
+  #     - POSTGRES_PASSWORD=postgres
+
+networks:
+  default:
+    external:
+      name: datastore_default
+
+

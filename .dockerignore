@@ -1,0 +1,12 @@
+node_modules/
+.git
+dist/
+.DS_Store
+libs/
+coverage/
+.idea/
+log/
+.vscode
+*.log
+*.rdb
+output*
