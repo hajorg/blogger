@@ -1,5 +1,6 @@
 const Hapi = require('@hapi/hapi');
 const HapiAuthJWT = require('hapi-auth-jwt2');
+const Catbox = require('@hapi/catbox');
 
 const knex = require('knex');
 const connection = knex(require('./knexfile').development);
@@ -24,15 +25,38 @@ const init = async() => {
     },
   });
 
-  // server.route({
-  //   method: 'GET',
-  //   path: '/',
-  //   handler: async() => {
-  //     const res = await server.app.db('users').select('*');
-  //     console.log(res, 'see ehere ============')
-  //     return "Just a test";
-  //   }
-  // });
+  const allPostsCacheData = server.cache({
+    expiresIn: 10 * 60 * 1000,
+    segment: 'allPostsSegment',
+  });
+
+  server.method(
+    'getPosts',
+    async () => {
+      const id = 'getPosts';
+      let posts = await allPostsCacheData.get(id);
+      if (!posts) {
+        posts = await server.app.db('posts').select('*');
+        await allPostsCacheData.set(id, posts, 10 * 60 * 1000);
+      }
+      return posts
+    },
+  );
+
+  server.method(
+    'getPost',
+    async (attr) => {
+      const id = `getPost:${attr.id}`;
+      let post = await allPostsCacheData.get(id);
+      if (!post) {
+        post = await server.app.db('posts').select('*').where(attr).first();
+        if (post) await allPostsCacheData.set(id, post, 10 * 60 * 1000);
+      }
+      return post;
+    },
+  );
+
+  server.app.cache = { allPostsCacheData };
   server.route([...usersRoute(server), ...postsRoute(server)]);
 
   await server.start();
@@ -40,7 +64,6 @@ const init = async() => {
 };
 
 process.on('unHandledRejection', (err) => {
-  console.log('got ehee----------')
   console.log(err);
   process.exit(1);
 });

@@ -10,11 +10,10 @@ module.exports = (server) => ({
         id: Joi.number().required(),
       }),
     },
-    // auth: 'jwt'
   },
   handler: async (req, h) => {
     const { id } = req.params;
-    const post = await server.app.db('posts').select('*').where({ id }).first();
+    const post = server.methods.getPost({ id });
     if (!post) throw Boom.notFound('Post was not found :(');
     return post;
   }

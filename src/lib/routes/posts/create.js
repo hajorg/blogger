@@ -30,7 +30,9 @@ module.exports = (server) => ({
     const { title, text } = req.payload;
     const { id: user_id } = req.auth.credentials;
     try {
+      console.log(await server.app.cache.allPostsCacheData)
       const [post] = await server.app.db('posts').insert({ title, text, user_id }).returning('*');
+      await server.app.cache.allPostsCacheData.drop('getPosts');
       return post;
     } catch (e) {
       console.log(e);
