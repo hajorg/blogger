@@ -25,7 +25,7 @@
     "bcrypt": "^5.0.0",
     "hapi-auth-jwt2": "^10.2.0",
     "joi": "^17.2.1",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "knex": "^0.20.8",
     "pg": "^7.17.1"
   },
